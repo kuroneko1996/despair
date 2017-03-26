@@ -17,6 +17,7 @@ public:
 	void clear();
 	void addItem(MenuItemCode code, const char *label);
 	MenuItemCode pick(DisplayMode mode=MAIN);
+	int selectWithMouse(int mousex, int mousey, int startx, int starty);
 protected:
 	struct MenuItem {
 		MenuItemCode code;

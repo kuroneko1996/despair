@@ -236,7 +236,17 @@ Menu::MenuItemCode Menu::pick(DisplayMode mode)
 		TCODConsole::flush();
 
 		TCOD_key_t key;
-		TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS, &key, nullptr, true);
+		TCOD_mouse_t mouse;
+		TCODSystem::waitForEvent(TCOD_EVENT_KEY_PRESS | TCOD_EVENT_MOUSE, &key, &mouse, true);
+
+		int mselected = selectWithMouse(mouse.cx, mouse.cy, menux, menuy);
+		if (mselected != -1) {
+			selectedItem = mselected;
+			if (mouse.lbutton_pressed) {
+				return(items.get(mselected)->code);
+			}
+		}
+
 		switch (key.vk) {
 		case TCODK_UP:
 		case TCODK_KP8:
@@ -260,4 +270,17 @@ Menu::MenuItemCode Menu::pick(DisplayMode mode)
 	}
 	
 	return MenuItemCode::NONE;
+}
+
+int Menu::selectWithMouse(int mousex, int mousey, int startx, int starty) {
+	int width = 100;
+	int height = 1;
+	int y = starty;
+	for (int i = 0; i < items.size(); i++) {
+		if (!(mousex < startx || mousey < y || mousex >= startx+width || mousey >= y+height)) {
+			return i;
+		}
+		y += 3;
+	}
+	return -1;
 }
