@@ -6,6 +6,7 @@
 #include "MonsterDestructible.h"
 #include "MonsterAi.h"
 #include "Healing.h"
+#include "Equipment.h"
 #include "LightningBolt.h"
 #include "Fireball.h"
 #include "utility.h"
@@ -224,6 +225,8 @@ void Map::addItem(int x, int y)
 	chances.push_back(70); // health
 	chances.push_back(20); // lightning
 	chances.push_back(15); // fireball
+	chances.push_back(10); // dagger
+	chances.push_back(7); // shield
 
 	int selected = utility::get_random(chances);
 
@@ -247,6 +250,20 @@ void Map::addItem(int x, int y)
 		fireballScroll->pickable = new Fireball(3, 12);
 		fireballScroll->alwaysVisible = true;
 		engine.actors.push(fireballScroll);
+	}
+	else if (selected == 3) {
+		Actor *dagger = new Actor(x, y, Engine::S_DAGGER, "dagger", TCODColor::white);
+		dagger->blocks = false;
+		dagger->pickable = new Equipment(Equipment::Slot::RightHand);
+		dagger->alwaysVisible = true;
+		engine.actors.push(dagger);
+	}
+	else if (selected == 4) {
+		Actor *shield = new Actor(x, y, Engine::S_SHIELD, "shield", TCODColor::white);
+		shield->blocks = false;
+		shield->pickable = new Equipment(Equipment::Slot::LeftHand);
+		shield->alwaysVisible = true;
+		engine.actors.push(shield);
 	}
 }
 

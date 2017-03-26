@@ -165,14 +165,6 @@ void Gui::showHelp() {
 		if (key.vk != TCODK_NONE) {
 			return;
 		}
-		/*switch (key.vk) {
-		case TCODK_ENTER:
-		case TCODK_ESCAPE:
-		case TCODK_SPACE:
-			return;
-			break;
-		default: break;
-		}*/
 	}
 }
 

@@ -14,6 +14,9 @@ Engine::Engine(int screenWidth, int screenHeight) : gameStatus(STARTUP), fovRadi
 	TCODConsole::initRoot(80, 50, "Dungeons of Despair", false);
 	gui = new Gui();
 
+	TCODConsole::mapAsciiCodeToFont(S_DAGGER, 1, 5);
+	TCODConsole::mapAsciiCodeToFont(S_SWORD, 2, 5);
+	TCODConsole::mapAsciiCodeToFont(S_SHIELD, 3, 5);
 	TCODConsole::mapAsciiCodeToFont(S_POTION, 4, 5);
 	TCODConsole::mapAsciiCodeToFont(S_SCROLL, 5, 5);
 	TCODConsole::mapAsciiCodeToFont(S_ORC, 7, 5);

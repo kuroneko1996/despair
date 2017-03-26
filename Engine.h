@@ -15,6 +15,9 @@ public:
 	} gameStatus;
 
 	enum SpriteMap {
+		S_DAGGER = 201,
+		S_SWORD = 202,
+		S_SHIELD = 203,
 		S_POTION = 204,
 		S_SCROLL = 205,
 		S_ORC = 207,

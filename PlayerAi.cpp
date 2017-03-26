@@ -1,7 +1,9 @@
 #include "PlayerAi.h"
 #include "Actor.h"
 #include "Engine.h"
+#include "Equipment.h"
 #include <cstdio>
+#include <typeinfo>
 
 const int PlayerAi::LEVEL_UP_BASE = 200;
 const int PlayerAi::LEVEL_UP_FACTOR = 150;
@@ -108,14 +110,6 @@ bool PlayerAi::moveOrAttack(Actor * owner, int targetx, int targety)
 			return false;
 		}
 	}
-	// look for corpses
-	/*for (Actor **iterator = engine.actors.begin(); iterator != engine.actors.end(); iterator++) {
-		Actor *actor = *iterator;
-		if (actor->x == targetx && actor->y == targety
-			&& actor->destructible && actor->destructible->isDead()) {
-			engine.gui->message(TCODColor::white,"There's a %s here.\n", actor->name);
-		}
-	}*/
 
 	owner->x = targetx;
 	owner->y = targety;
@@ -210,6 +204,7 @@ int PlayerAi::getNextLevelXp()
 	return LEVEL_UP_BASE + xpLevel*LEVEL_UP_FACTOR;
 }
 
+// draw inventory screen
 Actor * PlayerAi::choseFromInventory(Actor * owner)
 {
 	static const int INVENTORY_WIDTH = 50;
@@ -227,7 +222,25 @@ Actor * PlayerAi::choseFromInventory(Actor * owner)
 	for (Actor **it = owner->container->inventory.begin();
 		it != owner->container->inventory.end(); it++) {
 		Actor *item = *it;
-		con.print(2, y, "(%c) %s", shortcut, item->name);
+
+		if (item->pickable) {
+			Pickable* pickable = item->pickable;
+			if (typeid(*pickable) == typeid(Equipment)) {
+				Equipment* equipment = dynamic_cast<Equipment*>(pickable);
+				if (equipment) {
+					if (equipment->equipped) {
+						con.print(2, y, "(%c) [%s]%s", shortcut, item->name, equipment->getSlotName());
+					}
+					else {
+						con.print(2, y, "(%c) %s", shortcut, item->name);
+					}
+				}
+			}
+			else {
+				con.print(2, y, "(%c) %s", shortcut, item->name);
+			}
+		}
+
 		y++;
 		shortcut++;
 	}
