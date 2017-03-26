@@ -254,14 +254,18 @@ void Map::addItem(int x, int y)
 	else if (selected == 3) {
 		Actor *dagger = new Actor(x, y, Engine::S_DAGGER, "dagger", TCODColor::white);
 		dagger->blocks = false;
-		dagger->pickable = new Equipment(Equipment::Slot::RightHand);
+		dagger->pickable = new Pickable();
+		dagger->equipment = new Equipment(Equipment::Slot::RightHand);
+		dagger->equipment->power_bonus = 2;
 		dagger->alwaysVisible = true;
 		engine.actors.push(dagger);
 	}
 	else if (selected == 4) {
 		Actor *shield = new Actor(x, y, Engine::S_SHIELD, "shield", TCODColor::white);
 		shield->blocks = false;
-		shield->pickable = new Equipment(Equipment::Slot::LeftHand);
+		shield->pickable = new Pickable();
+		shield->equipment = new Equipment(Equipment::Slot::LeftHand);
+		shield->equipment->defense_bonus = 2;
 		shield->alwaysVisible = true;
 		engine.actors.push(shield);
 	}

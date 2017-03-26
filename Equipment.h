@@ -3,7 +3,7 @@
 
 class Container;
 
-class Equipment : public Pickable
+class Equipment
 {
 public:
 	enum Slot {
@@ -11,10 +11,13 @@ public:
 	};
 	Slot slot;
 	bool equipped = false;
+	float power_bonus = 0;
+	float defense_bonus = 0;
+	float max_hp_bonus = 0;
 
 	Equipment();
 	Equipment::Equipment(Slot slot);
-	bool use(Actor *owner, Actor *wearer) override;
+	bool toggleEquip(Actor *owner, Actor *wearer);
 	bool equip(Actor *owner);
 	bool dequip(Actor *owner);
 	Equipment* getAtSlot(Slot slot, Container const *container);

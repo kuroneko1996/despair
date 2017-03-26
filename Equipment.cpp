@@ -38,10 +38,9 @@ Equipment* Equipment::getAtSlot(Slot slot, Container const *container) {
 		Actor* actor = *it;
 		if (!actor->pickable) continue;
 
-		Pickable* item = actor->pickable;
-		if (typeid(*item) == typeid(Equipment)) {
-			Equipment* equipment = dynamic_cast<Equipment*>(item);
-			if (equipment && equipment->slot == slot) {
+		if (actor->equipment) {
+			Equipment *equipment = actor->equipment;
+			if( equipment->slot == slot ) {
 				return equipment;
 			}
 		}
@@ -49,7 +48,7 @@ Equipment* Equipment::getAtSlot(Slot slot, Container const *container) {
 	return nullptr;
 }
 
-bool Equipment::use(Actor *owner, Actor *wearer) {
+bool Equipment::toggleEquip(Actor *owner, Actor *wearer) {
 	if (!wearer->container) {
 		return false;
 	}

@@ -18,6 +18,7 @@ Actor::~Actor()
 	if (ai) delete ai;
 	if (pickable) delete pickable;
 	if (container) delete container;
+	if (equipment) delete equipment;
 }
 
 void Actor::update() {
@@ -51,4 +52,20 @@ float Actor::getDistance(int cx, int cy) const
 	int dx = x - cx;
 	int dy = y - cy;
 	return sqrtf(dx*dx + dy*dy);
+}
+
+std::vector<Equipment*> Actor::getAllEquipped()
+{
+	std::vector<Equipment*> result;
+
+	if (name == "Player") { // TODO change to type
+		for (Actor **it = container->inventory.begin(); it != container->inventory.end(); it++) {
+			Actor* item = *it;
+			if (item->equipment && item->equipment->equipped) {
+				result.push_back(item->equipment);
+			}
+		}
+	}
+
+	return result;
 }

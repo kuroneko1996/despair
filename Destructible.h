@@ -7,7 +7,7 @@ class Destructible
 public:
 	float maxHp;
 	float hp;
-	float defense;
+	float base_defense;
 	const char *corpseName;
 	int xp; // xp gained when killing others destructible
 
@@ -16,6 +16,7 @@ public:
 	inline bool isDead() { return hp <= 0; };
 	float takeDamage(Actor *owner, float damage);
 	float heal(float amount);
+	float defense(Actor * owner);
 	virtual void die(Actor *owner);
 };
 

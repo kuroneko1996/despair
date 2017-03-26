@@ -1,9 +1,11 @@
 #pragma once
+#include <vector>
 #include "libtcod.hpp"
 #include "Destructible.h"
 #include "Attacker.h"
 #include "Ai.h"
 #include "Pickable.h"
+#include "Equipment.h"
 #include "Container.h"
 
 class Actor
@@ -26,6 +28,7 @@ public:
 	Destructible *destructible; // something has life
 	Ai *ai; // something self updating
 	Pickable *pickable; // something that can be picked
+	Equipment *equipment; // something that can be equipped
 	Container *container; // something that can contain actors
 
 	Actor(int x, int y, int ch, const char *name, const TCODColor &col);
@@ -34,5 +37,6 @@ public:
 	void render() const;
 	void clear();
 	float getDistance(int cx, int cy) const;
+	std::vector<Equipment *> getAllEquipped();
 };
 

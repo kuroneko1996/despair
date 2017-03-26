@@ -152,8 +152,8 @@ void Engine::sendToBack(Actor * actor)
 
 void Engine::createPlayer() {
 	player = new Actor(40, 25, '@', "Player", TCODColor::white);
-	player->destructible = new PlayerDestructible(30, 2, "your cadaver");
-	player->attacker = new Attacker(5);
+	player->destructible = new PlayerDestructible(30, 1, "your cadaver");
+	player->attacker = new Attacker(4);
 	player->ai = new PlayerAi();
 	player->container = new Container(26);
 	actors.push(player);

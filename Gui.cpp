@@ -67,7 +67,7 @@ void Gui::render()
 		ai->getNextLevelXp(),
 		TCODColor::lightViolet, TCODColor::darkerViolet);
 
-	con->print(3, 2, "Atk: %0.0f, Def: %0.0f", engine.player->attacker->power, engine.player->destructible->defense);
+	con->print(3, 2, "Atk: %0.0f, Def: %0.0f", engine.player->attacker->power(engine.player), engine.player->destructible->defense(engine.player));
 
 	TCODConsole::blit(con, 0, 0, engine.screenWidth, PANEL_HEIGHT, TCODConsole::root, 0, engine.screenHeight - PANEL_HEIGHT);
 }

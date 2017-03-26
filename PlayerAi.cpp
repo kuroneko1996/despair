@@ -32,10 +32,10 @@ void PlayerAi::update(Actor *owner)
 			owner->destructible->hp += 20;
 			break;
 		case Menu::STRENGTH :
-			owner->attacker->power += 1;
+			owner->attacker->base_power += 1;
 			break;
 		case Menu::AGILITY :
-			owner->destructible->defense += 1;
+			owner->destructible->base_defense += 1;
 			break;
 		default:
 			break;
@@ -147,10 +147,17 @@ void PlayerAi::handleActionKey(Actor * owner, int key)
 
 		case 'i': 
 		{
+			// owner is player
 			Actor *item = choseFromInventory(owner);
 			if (item) {
-				item->pickable->use(item, owner); // if ?
-				engine.gameStatus = Engine::NEW_TURN;
+				if (item->equipment) {
+					item->equipment->toggleEquip(item, owner);
+					engine.gameStatus = Engine::NEW_TURN;
+				}
+				else {
+					item->pickable->use(item, owner);
+					engine.gameStatus = Engine::NEW_TURN;
+				}
 			}
 		} 
 		break;
@@ -223,24 +230,18 @@ Actor * PlayerAi::choseFromInventory(Actor * owner)
 		it != owner->container->inventory.end(); it++) {
 		Actor *item = *it;
 
-		if (item->pickable) {
-			Pickable* pickable = item->pickable;
-			if (typeid(*pickable) == typeid(Equipment)) {
-				Equipment* equipment = dynamic_cast<Equipment*>(pickable);
-				if (equipment) {
-					if (equipment->equipped) {
-						con.print(2, y, "(%c) [%s]%s", shortcut, item->name, equipment->getSlotName());
-					}
-					else {
-						con.print(2, y, "(%c) %s", shortcut, item->name);
-					}
-				}
+		if (item->equipment) {
+			Equipment *equipment = item->equipment;
+			if (equipment->equipped) {
+				con.print(2, y, "(%c) [%s]%s", shortcut, item->name, equipment->getSlotName());
 			}
 			else {
 				con.print(2, y, "(%c) %s", shortcut, item->name);
 			}
 		}
-
+		else {
+			con.print(2, y, "(%c) %s", shortcut, item->name);
+		}
 		y++;
 		shortcut++;
 	}
