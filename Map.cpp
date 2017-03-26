@@ -104,7 +104,12 @@ void Map::createRoom(bool first, int x1, int y1, int x2, int y2, bool withActors
 	else {
 		// place objects/monsters/npcs
 		TCODRandom *rng = TCODRandom::getInstance();
-		int monster_counter = rng->getInt(0, MAX_ROOM_MONSTERS);
+		using namespace utility;
+
+		std::vector<Transition> mtransitions{ Transition{1,2}, Transition{4,3},Transition{6,5} };
+		int max_monsters = fromDungeonLevel(mtransitions, engine.level);
+		int monster_counter = rng->getInt(0, max_monsters);
+
 		while (monster_counter > 0) {
 			int x = rng->getInt(x1, x2);
 			int y = rng->getInt(y1, y2);
@@ -115,14 +120,17 @@ void Map::createRoom(bool first, int x1, int y1, int x2, int y2, bool withActors
 		}
 
 		// add items
-		int itemsNumber = rng->getInt(0, MAX_ROOM_ITEMS);
-		while (itemsNumber > 0) {
+		std::vector<Transition> itransitions{ Transition{ 1,1 }, Transition{ 4,2 } };
+		int max_items = fromDungeonLevel(itransitions, engine.level);
+		int items_number = rng->getInt(0, max_items);
+
+		while (items_number > 0) {
 			int x = rng->getInt(x1, x2);
 			int y = rng->getInt(y1, y2);
 			if (canWalk(x, y)) {
 				addItem(x, y);
 			}
-			itemsNumber--;
+			items_number--;
 		}
 	}
 
@@ -216,6 +224,7 @@ void Map::addItem(int x, int y)
 	chances.push_back(70); // health
 	chances.push_back(20); // lightning
 	chances.push_back(15); // fireball
+
 	int selected = utility::get_random(chances);
 
 	if (selected == 0) {

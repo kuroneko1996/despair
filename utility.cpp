@@ -29,4 +29,14 @@ namespace utility {
 		return rng->getInt(low, high);
 		//return(rand() % (high - low + 1) + low);
 	}
+
+	int fromDungeonLevel(std::vector<Transition>& table, int level) {
+		for (auto rit = table.rbegin(); rit != table.rend(); rit++) {
+			Transition transition = *rit;
+			if (transition.level <= level) {
+				return transition.value;
+			}
+		}
+		return 0;
+	}
 }
